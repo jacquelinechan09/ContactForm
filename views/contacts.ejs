@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact List</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+  <h2>Contact List</h2>
+  <ul>
+    <% contacts.forEach(contact => { %>
+      <li>
+        <h3>Name: <%= contact.name %></h3>
+        <p>Email: <%= contact.email %></p>
+        <p>Message: <%= contact.message %></p>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>
