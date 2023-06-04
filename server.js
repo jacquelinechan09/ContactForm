@@ -72,6 +72,21 @@ app.post('/submit', (req, res) => {
     });
 });
 
+// DELETE route to delete a contact entry
+app.delete('/contacts/:id', (req, res) => {
+  const contactId = req.params.id;
+
+  Contact.findByIdAndDelete(contactId, (err) => {
+    if (err) {
+      console.log('Error deleting contact:', err);
+      res.status(500).send('Error deleting contact');
+    } else {
+      console.log('Contact deleted successfully');
+      res.sendStatus(200);
+    }
+  });
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
