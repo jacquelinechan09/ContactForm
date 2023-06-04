@@ -1,19 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact List</title>
-  <link rel="stylesheet" type="text/css" href="/style.css">
+  <style>
+    .contact-card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    .contact-card .delete-button {
+      background-color: #ff6347;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .no-contacts-message {
+      font-style: italic;
+      color: #888;
+    }
+  </style>
 </head>
+
 <body>
   <h2>Contact List</h2>
-  <ul>
-    <% contacts.forEach(contact => { %>
-      <li>
-        <h3>Name: <%= contact.name %></h3>
-        <p>Email: <%= contact.email %></p>
-        <p>Message: <%= contact.message %></p>
-      </li>
-    <% }); %>
+  <% if (contacts.length === 0) { %>
+  <p class="no-contacts-message">No contacts found.</p>
+  <% } else { %>
+  <ul id="contactList">
+    <% contacts.forEach(function(contact) { %>
+    <li class="contact-card">
+      <strong>Name:</strong> <%= contact.name %><br>
+      <strong>Email:</strong> <%= contact.email %><br>
+      <strong>Message:</strong> <%= contact.message %><br>
+      <button class="delete-button" onclick="confirmDelete('<%= contact._id %>')">Delete</button>
+    </li>
+    <% }) %>
   </ul>
+  <% } %>
+
+  <script>
+    function confirmDelete(contactId) {
+      var confirmDelete = confirm("Are you sure you want to delete this contact?");
+      if (confirmDelete) {
+        deleteContact(contactId);
+      }
+    }
+
+    function deleteContact(contactId) {
+      fetch(`/contacts/${contactId}`, {
+        method: 'DELETE'
+      })
+        .then(() => {
+          console.log('Contact deleted successfully');
+          window.location.reload(); // Refresh the page after deleting
+        })
+        .catch((error) => {
+          console.log('Error deleting contact:', error);
+        });
+    }
+  </script>
 </body>
+
 </html>
